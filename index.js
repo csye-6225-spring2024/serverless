@@ -59,8 +59,8 @@ const User = sequelize.define('User', {
 });
 
 const mg = mailgun({
-  apiKey: 'd6fba5dc7e62e2c6cac695f04613b321-309b0ef4-621410c1',
-  domain: 'centralhub.me'
+  apiKey: process.env.MAILGUN_API_KEY,
+  domain: process.env.MAILGUN_DOMAIN
 });
 
 const pubsub = new PubSub();
@@ -78,9 +78,9 @@ export const processNewUser = async (event, context) => {
 
 const VerificationEmail = async (username, token) => {
   try {
-    const apiKey = "d6fba5dc7e62e2c6cac695f04613b321-309b0ef4-621410c1";
-    const domain = "centralhub.me";
-    const sender = "mail@centralhub.me";
+    const apiKey = process.env.MAILGUN_API_KEY;
+    const domain = process.env.MAILGUN_DOMAIN;
+    const sender = process.env.MAIL_SENDER;
     const data = {
       from: sender,
       to: username,
@@ -96,7 +96,7 @@ const VerificationEmail = async (username, token) => {
 };
 
 const VerificationLink = (username, token) => {
-  const baseUrl = 'http://centralhub.me:8080';
+  const baseUrl = process.env.BASE_URL;
   const verificationLink = `${baseUrl}/verify?username=${username}&token=${token}`;
   return verificationLink;
 };
